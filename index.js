@@ -7,6 +7,8 @@ const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
 const bot = new TelegramBot(token, { polling: true });
 
+const DBURL = "http://localhost:8000/todo";
+
 const start = () => {
   bot.setMyCommands([
     { command: "/start", description: "начать разгавор с ботом" },
@@ -15,6 +17,7 @@ const start = () => {
     { command: "/begish", description: "расписание бегиш" },
     { command: "/dream", description: "гимн" },
     { command: "/save", description: "сохранить" },
+    { command: "/todo", description: "напомнить" },
   ]);
   bot.on("message", async (msg) => {
     const text = msg.text;
@@ -53,6 +56,7 @@ const start = () => {
       return bot.sendAudio(chatId, dream);
     }
     //
+
     //save todo
     if (text.split(" ")[0] === "/save") {
       console.log(text);
@@ -68,7 +72,20 @@ const start = () => {
         date: todo[2].replace(/date|\s|\=/g, ""),
       };
       console.log(todoOb);
-      axios.post("http://localhost:8000/todo", todoOb);
+      axios.post(DBURL, todoOb);
+    }
+
+    //todo
+    if (text.split(" ")[0] === "/todo") {
+      let { data } = await axios(DBURL);
+      let todo = data.filter(
+        (elem) =>
+          elem.name.toUpperCase() === text.replace(/\s|name/g, "").toUpperCase()
+      );
+      return bot.sendMessage(
+        chatId,
+        `${todo[0].name}\ndo${todo[0].do}\ndate:${todo[0].date}`
+      );
     }
 
     //;;;;;;;
