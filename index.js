@@ -7,24 +7,13 @@ const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
 const bot = new TelegramBot(token, { polling: true });
 
-// const weatherOptions = {
-//   reply_markup: JSON.stringify({
-//     inline_keyboard: [
-//       [{ text: "Бишкек", callback_data: "1Bishkek" }],
-//       [{ text: "Москва", callback_data: "1Moscow" }],
-//       [{ text: "Анкара", callback_data: "1Ankara" }],
-//       [{ text: "Нур-Султан", callback_data: "1Nur-Sultan" }],
-//       [{ text: "Ташкент", callback_data: "1Tashkent" }],
-//       [{ text: "Кемин", callback_data: "1Kemin" }],
-//     ],
-//   }),
-// };
 const start = () => {
   bot.setMyCommands([
     { command: "/start", description: "начать разгавор с ботом" },
     { command: "/anegdot", description: "рассказать анегдот" },
     { command: "/weather", description: "узнать погоду" },
     { command: "/begish", description: "расписание бегиш" },
+    { command: "/dream", description: "гимн" },
   ]);
   bot.on("message", async (msg) => {
     const text = msg.text;
@@ -52,9 +41,15 @@ const start = () => {
     if (text === "/weather") {
       return bot.sendMessage(chatId, "Выберите город", weatherOptions);
     }
+    //begish
     if (text === "/begish") {
       const image = fs.readFileSync("./images/begish.jpg");
       return bot.sendPhoto(chatId, image);
+    }
+    //dream
+    if (text === "/dream") {
+      const dream = fs.readFileSync("./audio/Nelly.mp3");
+      return bot.sendAudio(chatId, dream);
     }
     //;;;;;;;
     if (
@@ -109,9 +104,9 @@ const start = () => {
   bot.on("callback_query", async (msg) => {
     const message = msg.data;
     const chatId = msg.message.chat.id;
+    //1
     if (message[0] == "1") {
       const apiKey = "42c86fedafa859132192ba49496ee723";
-
       let city = `${message.slice(1)}`;
       const URL = `http://api.openweathermap.org/data/2.5/weather?q=${city}&lang=ru&units=metric&appid=${apiKey}`;
       let { data } = await axios(URL);
