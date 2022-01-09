@@ -7,7 +7,7 @@ const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
 const bot = new TelegramBot(token, { polling: true });
 
-const DBURL = "http://localhost:8000/todo";
+const DBURL = "https://govno-bot-01.herokuapp.com/api/todo";
 
 const start = () => {
   bot.setMyCommands([
