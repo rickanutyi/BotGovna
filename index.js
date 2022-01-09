@@ -1,23 +1,24 @@
 const { default: axios } = require("axios");
 const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
+const { weatherOptions } = require("./Options.js");
 
 const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
 const bot = new TelegramBot(token, { polling: true });
 
-const weatherOptions = {
-  reply_markup: JSON.stringify({
-    inline_keyboard: [
-      [{ text: "Бишкек", callback_data: "1Bishkek" }],
-      [{ text: "Москва", callback_data: "1Moscow" }],
-      [{ text: "Анкара", callback_data: "1Ankara" }],
-      [{ text: "Нур-Султан", callback_data: "1Nur-Sultan" }],
-      [{ text: "Ташкент", callback_data: "1Tashkent" }],
-      [{ text: "Кемин", callback_data: "1Kemin" }],
-    ],
-  }),
-};
+// const weatherOptions = {
+//   reply_markup: JSON.stringify({
+//     inline_keyboard: [
+//       [{ text: "Бишкек", callback_data: "1Bishkek" }],
+//       [{ text: "Москва", callback_data: "1Moscow" }],
+//       [{ text: "Анкара", callback_data: "1Ankara" }],
+//       [{ text: "Нур-Султан", callback_data: "1Nur-Sultan" }],
+//       [{ text: "Ташкент", callback_data: "1Tashkent" }],
+//       [{ text: "Кемин", callback_data: "1Kemin" }],
+//     ],
+//   }),
+// };
 const start = () => {
   bot.setMyCommands([
     { command: "/start", description: "начать разгавор с ботом" },
