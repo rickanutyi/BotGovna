@@ -22,6 +22,7 @@ const start = () => {
     { command: "/start", description: "начать разгавор с ботом" },
     { command: "/anegdot", description: "рассказать анегдот" },
     { command: "/weather", description: "узнать погоду" },
+    { command: "/begish", description: "расписание бегиш" },
   ]);
   bot.on("message", async (msg) => {
     const text = msg.text;
