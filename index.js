@@ -14,6 +14,7 @@ const start = () => {
     { command: "/weather", description: "узнать погоду" },
     { command: "/begish", description: "расписание бегиш" },
     { command: "/dream", description: "гимн" },
+    { command: "/dreamStream", description: "гимн" },
   ]);
   bot.on("message", async (msg) => {
     const text = msg.text;
@@ -50,6 +51,11 @@ const start = () => {
     if (text === "/dream") {
       const dream = fs.readFileSync("./audio/Nelly.mp3");
       return bot.sendAudio(chatId, dream);
+    }
+    //sream
+    if (text === "/dreamStream") {
+      const stream = fs.createReadStream("./audio/Nelly.mp3");
+      return bot.sendAudio(chatId, stream);
     }
     //;;;;;;;
     if (
