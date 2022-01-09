@@ -14,7 +14,7 @@ const start = () => {
     { command: "/weather", description: "узнать погоду" },
     { command: "/begish", description: "расписание бегиш" },
     { command: "/dream", description: "гимн" },
-    { command: "/dreamStream", description: "гимн" },
+    { command: "/save", description: "сохранить" },
   ]);
   bot.on("message", async (msg) => {
     const text = msg.text;
@@ -52,11 +52,25 @@ const start = () => {
       const dream = fs.readFileSync("./audio/Nelly.mp3");
       return bot.sendAudio(chatId, dream);
     }
-    //sream
-    if (text === "/dreamStream") {
-      const stream = fs.createReadStream("./audio/Nelly.mp3");
-      return bot.sendAudio(chatId, stream);
+    //
+    //save todo
+    if (text.split(" ")[0] === "/save") {
+      console.log(text);
+      let todo = text
+        .replace(/\n/g, "")
+        .match(
+          /(name\s*\-\s*\w+\s*)|(do\s*\-\s*\w+\s*)|(date\s*\=\s*\d\d\-\d\d\-\d\d\d\d\s*)/g
+        );
+      console.log(todo);
+      let todoOb = {
+        name: todo[0].replace(/name|\-|\s/g, ""),
+        do: todo[1].replace(/do|\s|\-/g, ""),
+        date: todo[2].replace(/date|\s|\=/g, ""),
+      };
+      console.log(todoOb);
+      axios.post("http://localhost:8000/todo", todoOb);
     }
+
     //;;;;;;;
     if (
       text.includes("как дела") ||
@@ -107,6 +121,11 @@ const start = () => {
       "Извини, в ответах я ограничен, правильно задавай вопросы"
     );
   });
+
+  //
+  //
+  //
+  //
   bot.on("callback_query", async (msg) => {
     const message = msg.data;
     const chatId = msg.message.chat.id;
