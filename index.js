@@ -50,7 +50,9 @@ const start = () => {
     if (text === "/weather") {
       return bot.sendMessage(chatId, "Выберите город", weatherOptions);
     }
-
+    if (text === "/begish") {
+      return bot.sendPhoto(chatId, "/images/begish.jpg");
+    }
     //;;;;;;;
     if (
       text.includes("как дела") ||
