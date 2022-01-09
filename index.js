@@ -1,4 +1,5 @@
 const { default: axios } = require("axios");
+const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
 
 const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
@@ -51,7 +52,8 @@ const start = () => {
       return bot.sendMessage(chatId, "Выберите город", weatherOptions);
     }
     if (text === "/begish") {
-      return bot.sendPhoto(chatId, "/images/begish.jpg");
+      const image = fs.readFileSync("./images/begish.jpg");
+      return bot.sendPhoto(chatId, image);
     }
     //;;;;;;;
     if (
