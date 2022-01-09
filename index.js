@@ -77,14 +77,15 @@ const start = () => {
 
     //todo
     if (text.split(" ")[0] === "/todo") {
-      let { data } = await axios(DBURL);
-      let todo = data.filter(
-        (elem) =>
-          elem.name.toUpperCase() === text.replace(/\s|name/g, "").toUpperCase()
-      );
+      console.log(text);
+      let name = text.replace(/ |todo|\//g, "").toLowerCase();
+      let { data } = await axios(`${DBURL}?q=${name}`);
+      console.log(data);
+
+      console.log(text.replace(/ |todo|\//g, "").toLowerCase());
       return bot.sendMessage(
         chatId,
-        `${todo[0].name}\ndo${todo[0].do}\ndate:${todo[0].date}`
+        `${data[0].name}\ndo - ${data[0].do}\ndate: ${data[0].date}`
       );
     }
 
