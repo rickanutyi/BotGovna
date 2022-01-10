@@ -5,6 +5,18 @@
       "do": "read",
       "date": "12-01-2022",
       "id": 1
+    },
+    {
+      "name": "Adilet",
+      "do": "watch",
+      "date": "20-02-2022",
+      "id": 2
+    },
+    {
+      "name": "Reno",
+      "do": "loops",
+      "date": "24-01-2022",
+      "id": 3
     }
   ]
 }

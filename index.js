@@ -2,12 +2,15 @@ const { default: axios } = require("axios");
 const fs = require("fs");
 const TelegramBot = require("node-telegram-bot-api");
 const { weatherOptions } = require("./Options.js");
+const { addDoc, collection } = require("firebase/firestore");
+const { db } = require("./firebase");
 
 const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
 const bot = new TelegramBot(token, { polling: true });
 
-const DBURL = "https://govno-bot-01.herokuapp.com/api/todo";
+// const DBURL = "https://govno-bot-01.herokuapp.com/api/todo";
+const DBURL = "http://localhost:8000/todo";
 
 const start = () => {
   bot.setMyCommands([
@@ -72,7 +75,12 @@ const start = () => {
         date: todo[2].replace(/date|\s|\=/g, ""),
       };
       console.log(todoOb);
-      axios.post(DBURL, todoOb);
+      return axios.post(DBURL, todoOb);
+      // let data = await addDoc(collection(db, "todos"), {
+      //   name: todo[0].replace(/name|\-|\s/g, ""),
+      //   do: todo[1].replace(/do|\s|\-/g, ""),
+      //   date: todo[2].replace(/date|\s|\=/g, ""),
+      // });
     }
 
     //todo
