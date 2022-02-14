@@ -68,6 +68,21 @@ const start = () => {
       let arrOfNums = text.match(/\d+/g);
       let data = await calc.getSum(arrOfNums);
       return bot.sendMessage(chatId, `${data}`);
+      //
+    } else if (/^\#diff/.test(text)) {
+      let arrOfNums = text.match(/\d+/g);
+      let data = await calc.getDifference(arrOfNums);
+      return bot.sendMessage(chatId, `${data}`);
+      //
+    } else if (/^\#product/.test(text)) {
+      let arrOfNums = text.match(/\d+/g);
+      let data = await calc.getProduct(arrOfNums);
+      return bot.sendMessage(chatId, `${data}`);
+      //
+    } else if (/^\#quot/.test(text)) {
+      let arrOfNums = text.match(/\d+/g);
+      let data = await calc.getQuotient(arrOfNums);
+      return bot.sendMessage(chatId, `${data}`);
     }
 
     //save todo
