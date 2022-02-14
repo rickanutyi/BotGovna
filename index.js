@@ -4,6 +4,7 @@ const TelegramBot = require("node-telegram-bot-api");
 const { weatherOptions } = require("./Options.js");
 const { addDoc, collection } = require("firebase/firestore");
 const { db } = require("./firebase");
+const { calc } = require("./functions");
 
 const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
@@ -31,7 +32,10 @@ const start = () => {
         chatId,
         "https://tlgrm.ru/_/stickers/b50/063/b5006369-8faa-44d7-9f02-1ca97d82cd49/1.webp"
       );
-      return bot.sendMessage(chatId, `Дарова ${msg.from.first_name}`);
+      return bot.sendMessage(
+        chatId,
+        `Ohayo oniiii chan!! ${msg.from.first_name}`
+      );
     }
     //ffff
     if (text === "/anegdot") {
@@ -58,9 +62,16 @@ const start = () => {
       const dream = fs.readFileSync("./audio/Nelly.mp3");
       return bot.sendAudio(chatId, dream);
     }
-    //
+    // todo CALC EXPERIMRNTSL
+
+    if (/^\#sum/.test(text)) {
+      let arrOfNums = text.match(/\d+/g);
+      let data = await calc.getSum(arrOfNums);
+      return bot.sendMessage(chatId, `${data}`);
+    }
 
     //save todo
+    // ! DONT WORK
     if (text.split(" ")[0] === "/save") {
       console.log(text);
       let todo = text
@@ -74,16 +85,11 @@ const start = () => {
         do: todo[1].replace(/do|\s|\-/g, ""),
         date: todo[2].replace(/date|\s|\=/g, ""),
       };
-      console.log(todoOb);
       return axios.post(DBURL, todoOb);
-      // let data = await addDoc(collection(db, "todos"), {
-      //   name: todo[0].replace(/name|\-|\s/g, ""),
-      //   do: todo[1].replace(/do|\s|\-/g, ""),
-      //   date: todo[2].replace(/date|\s|\=/g, ""),
-      // });
     }
 
     //todo
+    // !DONT WORK
     if (text.split(" ")[0] === "/todo") {
       console.log(text);
       let name = text.replace(/ |todo|\//g, "").toLowerCase();
