@@ -32,10 +32,7 @@ const start = () => {
         chatId,
         "https://tlgrm.ru/_/stickers/b50/063/b5006369-8faa-44d7-9f02-1ca97d82cd49/1.webp"
       );
-      return bot.sendMessage(
-        chatId,
-        `Ohayo oniiii chan!! ${msg.from.first_name}`
-      );
+      return bot.sendMessage(chatId, `Ohayo oniiii chan!!`);
     }
     //ffff
     if (text === "/anegdot") {
