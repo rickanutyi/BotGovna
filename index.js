@@ -185,7 +185,7 @@ const start = () => {
       return bot.sendMessage(
         chatId,
         `Аниме - ${data.data[rand].title}\n
-                  ${data.data[rand].title_english}
+                ${data.data[rand].title_english}
         Трейлер - ${data.data[rand].trailer.url}\n
         Описание - ${data.data[rand].synopsis}
         `
