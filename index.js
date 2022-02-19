@@ -4,30 +4,37 @@ const TelegramBot = require("node-telegram-bot-api");
 const { weatherOptions } = require("./Options.js");
 const { addDoc, collection } = require("firebase/firestore");
 const { db } = require("./firebase");
-const { calc } = require("./functions");
+const { calc, anime } = require("./functions");
 
 const token = "5052672012:AAGaLo_LK0d34Y-iusDrnivZe8Vdgi6zaFQ";
 
 const bot = new TelegramBot(token, { polling: true });
 
 // const DBURL = "https://govno-bot-01.herokuapp.com/api/todo";
-const DBURL = "http://localhost:8000/todo";
+const DBURL = "http://localhost:6000/todo";
 
 const start = () => {
   bot.setMyCommands([
-    { command: "/start", description: "начать разгавор с ботом" },
-    { command: "/anegdot", description: "рассказать анегдот" },
+    {
+      command: "/start",
+      description: "начать разгавор с ботом",
+    },
+    {
+      command: "/anegdot",
+      description: "рассказать анегдот",
+    },
     { command: "/weather", description: "узнать погоду" },
     { command: "/begish", description: "расписание бегиш" },
     { command: "/dream", description: "гимн" },
-    { command: "/save", description: "сохранить" },
-    { command: "/todo", description: "напомнить" },
+    // { command: "/save", description: "сохранить" },
+    // { command: "/todo", description: "напомнить" },
   ]);
   bot.on("message", async (msg) => {
     const text = msg.text;
     const chatId = msg.chat.id;
+    console.log(msg);
 
-    if (text === "/start") {
+    if (text === "/start" || text === "/start@bot_govnobot_bot") {
       await bot.sendSticker(
         chatId,
         "https://tlgrm.ru/_/stickers/b50/063/b5006369-8faa-44d7-9f02-1ca97d82cd49/1.webp"
@@ -35,7 +42,7 @@ const start = () => {
       return bot.sendMessage(chatId, `Ohayo oniiii chan!!`);
     }
     //ffff
-    if (text === "/anegdot") {
+    if (text === "/anegdot" || text === "/anegdot@bot_govnobot_bot") {
       let joke = "";
       bot.sendSticker(
         chatId,
@@ -46,16 +53,16 @@ const start = () => {
       // console.log(data);
     }
     //weatherwwwwwwwwwwwwwwwwww
-    if (text === "/weather") {
+    if (text === "/weather" || text === "/weather@bot_govnobot_bot") {
       return bot.sendMessage(chatId, "Выберите город", weatherOptions);
     }
     //begish
-    if (text === "/begish") {
+    if (text === "/begish" || text === "/begish@bot_govnobot_bot") {
       const image = fs.readFileSync("./images/begish.jpg");
       return bot.sendPhoto(chatId, image);
     }
     //dream
-    if (text === "/dream") {
+    if (text === "/dream" || text === "/dream@bot_govnobot_bot") {
       const dream = fs.readFileSync("./audio/Nelly.mp3");
       return bot.sendAudio(chatId, dream);
     }
@@ -97,6 +104,7 @@ const start = () => {
         do: todo[1].replace(/do|\s|\-/g, ""),
         date: todo[2].replace(/date|\s|\=/g, ""),
       };
+      console.log(todoOb);
       return axios.post(DBURL, todoOb);
     }
 
@@ -159,10 +167,38 @@ const start = () => {
       );
     }
 
+    //photo
+    if (text === "фото") {
+      let url =
+        "https://c.tenor.com/8oKcMm_H83MAAAAC/%D0%BF%D0%B0%D0%BF%D0%B8%D1%87%D0%BD%D0%B0%D1%80%D1%83%D1%82%D0%BE-%D0%BF%D0%B0%D0%BF%D0%B8%D1%87.gif";
+      return bot.sendPhoto(chatId, url);
+    }
+
+    async function getTopAnime() {
+      let { data } = await axios("https://api.jikan.moe/v4/top/anime");
+      // console.log(data.data[0]);
+      let rand = Math.floor(Math.random() * data.data.length);
+      let d = await bot.sendPhoto(
+        chatId,
+        data.data[rand].images.jpg.large_image_url
+      );
+      return bot.sendMessage(
+        chatId,
+        `Аниме - ${data.data[rand].title}\n
+                  ${data.data[rand].title_english}
+        Трейлер - ${data.data[rand].trailer.url}\n
+        Описание - ${data.data[rand].synopsis}
+        `
+      );
+    }
+    if (text === "аниме") {
+      return getTopAnime();
+    }
+
     //''''''''
     return bot.sendMessage(
       chatId,
-      "Извини, в ответах я ограничен, правильно задавай вопросы"
+      "Извини братик, в ответах я ограничена, правильно задавай вопросы"
     );
   });
 
